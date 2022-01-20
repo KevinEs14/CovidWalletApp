@@ -1,68 +1,79 @@
+import 'package:covid_wallet_app/bloc/card/card_bloc.dart';
+import 'package:covid_wallet_app/bloc/settings/settings_cubit.dart';
+import 'package:covid_wallet_app/bloc/settings/settings_state.dart';
+import 'package:covid_wallet_app/models/card.dart';
+import 'package:covid_wallet_app/pages/init/init_page.dart';
+import 'package:covid_wallet_app/pages/main/home_page.dart';
+import 'package:covid_wallet_app/repositories/card_repository.dart';
+import 'package:covid_wallet_app/repositories/settings_repository.dart';
+import 'package:covid_wallet_app/routes.dart';
+import 'package:covid_wallet_app/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async{
+  Hive.registerAdapter(CardAdapter());
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<SettingsRepository>(create: (context)=>SettingsRepository()),
+        RepositoryProvider<CardRepository>(create: (context)=>CardRepository())
+      ],
+      child: BlocProvider(
+          create: (context) => SettingsCubit(context.read<SettingsRepository>())..getSettings(),
+          child: const Main()
+      ),
+    );
+  }
+}
+class Main extends StatefulWidget {
+  const Main({Key? key}) : super(key: key);
+
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  NavigatorState? get _navigator => _navigatorKey.currentState;
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        theme: buildTheme(),
+        navigatorKey: _navigatorKey,
+        initialRoute: Routes.initPage,
+        routes: {
+          Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>()),child: const HomePage(),),
+          Routes.initPage:(context)=> InitPage(settingsCubit:BlocProvider.of<SettingsCubit>(context)),
+        },
+        builder: (context,child){
+          return BlocListener<SettingsCubit,SettingsState>(
+            listener: (context,state){
+              if(state.firstTime){
+                  _navigator!.pushNamedAndRemoveUntil(Routes.initPage, (route) => false);
+              }
+              else{
+                _navigator!.pushNamedAndRemoveUntil(Routes.home, (route) => false);
+              }
+            },
+            child: child,
+          );
+        },
+      );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
