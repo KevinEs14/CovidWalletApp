@@ -9,65 +9,74 @@ class GeneralBackground extends StatelessWidget {
   final int height;
   final double opacityLogo;
   final String? title;
-  const GeneralBackground({Key? key,required this.child,this.height=3,this.opacityLogo=0,this.title}) : super(key: key);
+  final Widget? actionButton;
+  const GeneralBackground({Key? key,required this.child,this.height=3,this.opacityLogo=0,this.title,this.actionButton}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _size=MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorOnBackground,
+      floatingActionButton: actionButton,
       body: Stack(
         children: [
           Column(
-            children: [
-              Expanded(
-                flex: height,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: RadialGradient(colors: [
-                        colorOnBackground,
-                        colorBackground
-                      ])
+              children: [
+                Expanded(
+                  flex: height,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: RadialGradient(colors: [
+                          colorOnBackground,
+                          colorBackground
+                        ])
+                      )
                     )
-                  )
-              ),
-              height>=10?SizedBox.shrink():
-              Expanded(
-                  flex: 10-height,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        child: Image.asset("assets/isotype.png",fit: BoxFit.contain,width: 300,color: colorPrimary.withOpacity(opacityLogo),),
-                      bottom: 50,
-                      right: 0,
-                    )
-                  ],
-                )
-              )
-            ],
-          ),
-          Column(
-            children: [
-              title!=null?
-              Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                ),
+                height>=10?SizedBox.shrink():
+                Expanded(
+                    flex: 10-height,
+                  child: Stack(
                     children: [
-                      AppBar(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        centerTitle: true,
-                        title: title!=null?Text(title!,style: TextStyles.titleStyle,):null,
-                      ),
-
+                      Positioned(
+                          child: Image.asset("assets/isotype.png",fit: BoxFit.contain,width: 300,color: colorPrimary.withOpacity(opacityLogo),),
+                        bottom: 50,
+                        right: 0,
+                      )
                     ],
                   )
-                ):const SizedBox.shrink(),
-              Expanded(
-                flex: 10,
-                  child: child
-              )
-            ],
+                )
+              ],
+            ),
+          SingleChildScrollView(
+            child: SizedBox(
+              width: _size.width,
+              height: _size.height,
+              child: Column(
+                children: [
+                  title!=null?
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AppBar(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            centerTitle: true,
+                            title: title!=null?Text(title!,style: TextStyles.titleStyle,):null,
+                          ),
+
+                        ],
+                      )
+                  ):const SizedBox.shrink(),
+                  Expanded(
+                      flex: 6,
+                      child: child
+                  )
+                ],
+              ),
+            )
           )
         ],
       ),

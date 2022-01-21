@@ -24,5 +24,18 @@ class CardModel{
 
   CardModel({required this.fullName, required this.vaccine, required this.doseDates,required this.color,required this.barCode});
 
+  CardModel.init():
+      fullName="",
+      vaccine="",
+      doseDates=[],
+      color=0,
+      barCode="";
 
+  CardModel copyWith({String? fullName, String? vaccine, List<String>? doseDates,int? color,String? barCode}) =>
+      CardModel(fullName: fullName??this.fullName, vaccine: vaccine??this.vaccine, doseDates: doseDates??this.doseDates, color: color??this.color, barCode: barCode??this.barCode);
+
+  @override
+  String toString() {
+    return 'CardModel{key: $key, fullName: $fullName, vaccine: $vaccine, doseDates: $doseDates, color: $color, barCode: $barCode}';
+  }
 }

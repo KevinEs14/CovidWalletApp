@@ -1,18 +1,24 @@
 part of 'card_bloc.dart';
 
-class CardState extends Equatable {
+abstract class CardState extends Equatable {
 
   final List<CardModel> cards;
+  final CardModel currentCard;
 
   const CardState({
-    required this.cards});
-
-  const CardState.init(this.cards);
-
-  const CardState.foundCards(this.cards);
-
-  const CardState.waiting(this.cards);
+    required this.cards,
+    required this.currentCard
+  });
 
   @override
-  List<Object> get props => [cards];
+  List<Object?> get props => [cards,currentCard];
+}
+class CardStateInit extends CardState{
+  const CardStateInit(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+}
+class CardStateFoundCards extends CardState{
+  const CardStateFoundCards(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+}
+class CardStateWaiting extends CardState{
+  const CardStateWaiting(cards,currentCard) : super(cards: cards,currentCard: currentCard);
 }

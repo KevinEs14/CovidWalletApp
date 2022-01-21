@@ -58,7 +58,7 @@ class _MainState extends State<Main> {
         initialRoute: Routes.splash,
         routes: {
           Routes.splash:(context)=>const SplashPage(),
-          Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>()),child: const HomePage(),),
+          Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: const HomePage(),),
           Routes.initPage:(context)=> InitPage(settingsCubit:BlocProvider.of<SettingsCubit>(context)),
         },
         builder: (context,child){
