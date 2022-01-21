@@ -5,22 +5,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsCubit extends Cubit<SettingsState>{
   final SettingsRepository _settingsRepository;
-  SettingsCubit(this._settingsRepository) : super(const SettingsState());
+  SettingsCubit(this._settingsRepository) : super(InitSettings());
 
   void getSettings()async {
     await _settingsRepository.verifyFirstTime();
-    emit(state.copyWith(firstTime: _settingsRepository.firstTime));
+    if(_settingsRepository.firstTime){
+      emit(FirstTimeSettings());
+    }
+    else{
+      emit(FoundSettings());
+    }
   }
   void initSettings()async {
     await _settingsRepository.initSettings();
-    emit(state.copyWith(firstTime: _settingsRepository.firstTime));
+    emit(FoundSettings());
   }
 
 
   //DEVELOPER OPTIONS
   void clearSettings() async{
     await _settingsRepository.clearSettings();
-    emit(state.copyWith(firstTime: _settingsRepository.firstTime));
+    emit(FirstTimeSettings());
   }
 
 }

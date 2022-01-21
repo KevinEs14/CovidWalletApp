@@ -2,14 +2,14 @@ import 'package:covid_wallet_app/models/card.dart';
 import 'package:hive/hive.dart';
 
 class CardRepository{
-  List<Card> cards=[];
+  List<CardModel> cards=[];
 
   Future<void> getCards()async {
     try{
       cards=[];
-      var boxCards = await Hive.openBox<Card>('cards');
+      var boxCards = await Hive.openBox<CardModel>('cards');
       for(var key in boxCards.keys){
-        Card? card=boxCards.get(key);
+        CardModel? card=boxCards.get(key);
         if(card!=null){
           card.key=key;
           cards.add(card);
@@ -22,9 +22,9 @@ class CardRepository{
     }
 
   }
-  Future<void> addCard(Card card)async{
+  Future<void> addCard(CardModel card)async{
     try{
-      var boxCards = await Hive.openBox<Card>('cards');
+      var boxCards = await Hive.openBox<CardModel>('cards');
       await boxCards.add(card);
       boxCards.close();
     }
@@ -32,9 +32,9 @@ class CardRepository{
       throw "Could not add card";
     }
   }
-  Future<void> removeCard(Card card)async{
+  Future<void> removeCard(CardModel card)async{
     try{
-      var boxCards = await Hive.openBox<Card>('cards');
+      var boxCards = await Hive.openBox<CardModel>('cards');
       await boxCards.delete(card.key);
       boxCards.close();
     }
@@ -42,9 +42,9 @@ class CardRepository{
       throw "Could not remove card";
     }
   }
-  Future<void> updateCard(Card card)async{
+  Future<void> updateCard(CardModel card)async{
     try{
-      var boxCards = await Hive.openBox<Card>('cards');
+      var boxCards = await Hive.openBox<CardModel>('cards');
       await boxCards.put(card.key,card);
       boxCards.close();
     }

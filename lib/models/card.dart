@@ -2,7 +2,8 @@ import 'package:hive/hive.dart';
 
 part 'card.g.dart';
 @HiveType(typeId: 0)
-class Card{
+class CardModel{
+
   int? key;
 
   @HiveField(0)
@@ -13,7 +14,15 @@ class Card{
 
   @HiveField(2)
   List<String> doseDates;
-  Card({required this.fullName, required this.vaccine, required this.doseDates});
+
+
+  @HiveField(3)
+  int color;
+
+  @HiveField(4)
+  String barCode;
+
+  CardModel({required this.fullName, required this.vaccine, required this.doseDates,required this.color,required this.barCode});
 
 
 }

@@ -3,6 +3,7 @@ import 'package:covid_wallet_app/bloc/settings/settings_cubit.dart';
 import 'package:covid_wallet_app/bloc/settings/settings_state.dart';
 import 'package:covid_wallet_app/models/card.dart';
 import 'package:covid_wallet_app/pages/init/init_page.dart';
+import 'package:covid_wallet_app/pages/init/splash_page.dart';
 import 'package:covid_wallet_app/pages/main/home_page.dart';
 import 'package:covid_wallet_app/repositories/card_repository.dart';
 import 'package:covid_wallet_app/repositories/settings_repository.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async{
-  Hive.registerAdapter(CardAdapter());
+  Hive.registerAdapter(CardModelAdapter());
   await Hive.initFlutter();
   runApp(const MyApp());
 }
@@ -54,18 +55,19 @@ class _MainState extends State<Main> {
     return MaterialApp(
         theme: buildTheme(),
         navigatorKey: _navigatorKey,
-        initialRoute: Routes.initPage,
+        initialRoute: Routes.splash,
         routes: {
+          Routes.splash:(context)=>const SplashPage(),
           Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>()),child: const HomePage(),),
           Routes.initPage:(context)=> InitPage(settingsCubit:BlocProvider.of<SettingsCubit>(context)),
         },
         builder: (context,child){
           return BlocListener<SettingsCubit,SettingsState>(
             listener: (context,state){
-              if(state.firstTime){
-                  _navigator!.pushNamedAndRemoveUntil(Routes.initPage, (route) => false);
+              if(state is FirstTimeSettings){
+                _navigator!.pushNamedAndRemoveUntil(Routes.initPage, (route) => false);
               }
-              else{
+              else if(state is FoundSettings){
                 _navigator!.pushNamedAndRemoveUntil(Routes.home, (route) => false);
               }
             },

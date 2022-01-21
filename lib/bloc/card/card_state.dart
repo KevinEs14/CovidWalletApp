@@ -2,11 +2,10 @@ part of 'card_bloc.dart';
 
 class CardState extends Equatable {
 
-  final List<Card> cards;
+  final List<CardModel> cards;
 
   const CardState({
-    required this.cards
-  });
+    required this.cards});
 
   const CardState.init(this.cards);
 

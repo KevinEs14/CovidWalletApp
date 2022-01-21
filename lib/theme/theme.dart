@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'colors.dart';
+import 'values/colors.dart';
 
 const ButtonThemeData _buttonThemeData = ButtonThemeData(
   height: 42.0,
@@ -45,7 +45,11 @@ ColorScheme _colorScheme = const ColorScheme(
 );
 
 
-
+AppBarTheme _appBarTheme= const AppBarTheme(
+    iconTheme: IconThemeData(
+        color: colorTextPrimary
+    ),
+);
 
 
 ThemeData buildTheme() {
@@ -54,9 +58,14 @@ ThemeData buildTheme() {
   return base.copyWith(
     colorScheme: _colorScheme,
     primaryColor: colorPrimary,
-    // input
+    appBarTheme: _appBarTheme,
     errorColor: colorError,
     focusColor: colorPrimary,
+    textSelectionTheme:TextSelectionThemeData(
+      cursorColor: colorTextSecondary,
+      selectionColor: colorPrimary.withOpacity(0.3),
+      selectionHandleColor: colorPrimary
+    ),
     cardColor: colorSurface,
     scaffoldBackgroundColor: colorBackground,
     backgroundColor: colorBackground,

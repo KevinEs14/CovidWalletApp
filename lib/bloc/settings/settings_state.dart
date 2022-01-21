@@ -1,18 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class SettingsState extends Equatable{
-  final bool firstTime;
-  const SettingsState({this.firstTime=false});
-
+abstract class SettingsState extends Equatable{
+  const SettingsState();
   @override
-  List<Object> get props => [firstTime];
-
-  SettingsState copyWith({
-    bool? darkMode,
-    bool? firstTime,
-  }) {
-    return SettingsState(
-      firstTime: firstTime ?? this.firstTime,
-    );
-  }
+  List<Object?> get props => throw UnimplementedError();
 }
+class InitSettings extends SettingsState{}
+class FirstTimeSettings extends SettingsState{}
+class FoundSettings extends SettingsState{}

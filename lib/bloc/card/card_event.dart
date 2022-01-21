@@ -7,7 +7,7 @@ abstract class CardEvent extends Equatable{
 }
 class GetCardsEvent extends CardEvent{}
 class AddCardEvent extends CardEvent{
-  final Card card;
+  final CardModel card;
   const AddCardEvent(this.card);
 
   @override
@@ -15,14 +15,14 @@ class AddCardEvent extends CardEvent{
 }
 
 class RemoveCardEvent extends CardEvent{
-  final Card card;
+  final CardModel card;
   const RemoveCardEvent(this.card);
   @override
   List<Object> get props => [card];
 }
 
 class UpdateCardEvent extends CardEvent{
-  final Card card;
+  final CardModel card;
   const UpdateCardEvent(this.card);
 
   @override
