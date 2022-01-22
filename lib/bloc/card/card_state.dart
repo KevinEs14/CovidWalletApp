@@ -22,9 +22,14 @@ class CardStateFoundCards extends CardState{
 class CardStateWaiting extends CardState{
   const CardStateWaiting(cards,currentCard) : super(cards: cards,currentCard: currentCard);
 }
-class CardStateEditCard extends CardState{
-  const CardStateEditCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+class CardStateEditingCard extends CardState{
+  const CardStateEditingCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
 }
-class CardStateNewCard extends CardState{
-  const CardStateNewCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+class CardStateSaveOk extends CardState{
+  const CardStateSaveOk(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+}
+
+class CardStateSaveError extends CardState{
+  final String error;
+  const CardStateSaveError(cards,currentCard,this.error) : super(cards: cards,currentCard: currentCard);
 }

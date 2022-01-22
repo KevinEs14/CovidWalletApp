@@ -29,4 +29,13 @@ class TextStyles {
       color: colorTextSecondary,
       fontSize: 18,
       fontWeight: FontWeight.w600);
+
+  static const textButtonStyle= TextStyle(
+      color: colorTextPrimary,
+      fontSize: 18,
+      fontWeight: FontWeight.w600);
+  static const textButtonFillStyle= TextStyle(
+      color: colorTextSecondary,
+      fontSize: 18,
+      fontWeight: FontWeight.w600);
 }

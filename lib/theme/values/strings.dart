@@ -7,4 +7,11 @@ class Strings{
   static const editCard="Edit Card";
   static const newCard="New Card";
   static const home="My Information";
+
+
+
+  //ERRORS
+  static const errorEmptyFullName="Full name cannot be empty";
+  static const errorEmptyVaccine="Vaccine cannot be empty";
+  static const errorEmptyDoses="Must have at least one dose";
 }

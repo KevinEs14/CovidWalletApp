@@ -5,8 +5,8 @@ import 'package:covid_wallet_app/widgets/vaccination_card_minimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChooseColor extends StatelessWidget {
-  const ChooseColor({Key? key}) : super(key: key);
+class CardChooseColorPage extends StatelessWidget {
+  const CardChooseColorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class ChooseColor extends StatelessWidget {
                 flex: 4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("Choose the color",style: TextStyles.commentsStyle,),
-                    SizedBox(height: 10,),
-                    ButtonColors()
+                  children: [
+                    const Text("Choose the color",style: TextStyles.commentsStyle,),
+                    const SizedBox(height: 10,),
+                    ButtonColors(color:state.currentCard.color)
                   ],
                 )
             ),
@@ -39,7 +39,8 @@ class ChooseColor extends StatelessWidget {
   }
 }
 class ButtonColors extends StatefulWidget {
-  const ButtonColors({Key? key}) : super(key: key);
+  final int color;
+  const ButtonColors({Key? key,required this.color}) : super(key: key);
 
   @override
   State<ButtonColors> createState() => _ButtonColorsState();
@@ -49,7 +50,14 @@ class ButtonColors extends StatefulWidget {
 class _ButtonColorsState extends State<ButtonColors> {
   var size=const Size(1,1);
 
-  int active=-1;
+  int active=0;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      active=widget.color;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +80,7 @@ class _ButtonColorsState extends State<ButtonColors> {
             setState(() {
               active=i;
             });
+            context.read<CardBloc>().add(ChangeCurrentCardEvent(color: i));
           },
           child: Container(
             decoration: BoxDecoration(

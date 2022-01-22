@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage>{
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 25 ,horizontal: 30),
                     child: VaccinationCard(card: state.currentCard,),
-                  ):SpinKitThreeBounce(
+                  ):const SpinKitThreeBounce(
                     color: colorTextPrimary,
                     size: 50.0,
                   )

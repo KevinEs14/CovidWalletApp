@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'package:covid_wallet_app/bloc/card/card_bloc.dart';
 import 'package:covid_wallet_app/models/card.dart';
 import 'package:covid_wallet_app/theme/input_styles.dart';
+import 'package:covid_wallet_app/theme/my_behavior.dart';
 import 'package:covid_wallet_app/theme/text_styles.dart';
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
-import 'package:covid_wallet_app/ui/icons/icon_bottle.dart';
 import 'package:covid_wallet_app/ui/icons/icon_edit.dart';
 import 'package:covid_wallet_app/ui/icons/icon_pharmacy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../routes.dart';
 
 class VaccinationCard extends StatefulWidget {
 
@@ -48,7 +52,7 @@ class _VaccinationCardState extends State<VaccinationCard> {
             elevation: 5,
             child: Container(
               decoration: BoxDecoration(
-                  color: Color(widget.card.color),
+                  color: colorCards[widget.card.color],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Stack(
@@ -105,7 +109,8 @@ class ActionButtons extends StatelessWidget {
         IconButton(
           padding: const EdgeInsets.all(0),
             onPressed: (){
-              debugPrint("edit");
+              context.read<CardBloc>().add(EditCardEvent());
+              Navigator.pushNamed(context, Routes.maker,arguments: BlocProvider.of<CardBloc>(context));
             },
             icon: const IconEdit(width: 30.0,color: colorTextSecondary)
         ),
@@ -163,65 +168,104 @@ class _FormCardState extends State<FormCard> {
   final TextEditingController _vaccineController=TextEditingController();
   final List<TextEditingController> _dateController=[TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
+  final ScrollController _scrollController=ScrollController();
+
+  final GlobalKey<FormState> _formKey=GlobalKey();
   @override
   void initState() {
     _loadData();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
     super.initState();
   }
 
-  @override
-  void reassemble() {
-    _loadData();
-    super.reassemble();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-          child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const IconPharmacy(),
-                const SizedBox(height: 10,),
-                const Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
-                const Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
-                const SizedBox(height: 10,),
-                const SizedBox(height: 10,),
-                TextFormField(
-                  decoration: InputStyles.inputGeneral("","Full Name"),
-                  controller: _fullNameController,
-                  style: TextStyles.inputStyle,
+    return ScrollConfiguration(
+      behavior: MyBehavior(),
+      child:SingleChildScrollView(
+          controller: _scrollController,
+          padding: const EdgeInsets.all(20),
+        child:Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const IconPharmacy(),
+              const SizedBox(height: 10,),
+              const Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
+              const Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
+              const SizedBox(height: 10,),
+              const SizedBox(height: 10,),
+              TextField(
+                decoration: InputStyles.inputGeneral("","Full Name"),
+                controller: _fullNameController,
+                style: TextStyles.inputStyle,
+                onChanged: (value){
+                  context.read<CardBloc>().add(ChangeCurrentCardEvent(fullName: value));
+                },
 
-                ),
-                const SizedBox(height: 15,),
-                TextFormField(
-                  decoration: InputStyles.inputGeneral("","Vaccine"),
-                  controller: _vaccineController,
+              ),
+              const SizedBox(height: 15,),
+              TextField(
+                decoration: InputStyles.inputGeneral("","Vaccine"),
+                controller: _vaccineController,
+                onChanged: (value){
+                  context.read<CardBloc>().add(ChangeCurrentCardEvent(vaccine: value));
+                },
 
-                  style: TextStyles.inputStyle,
-                ),
-                const  SizedBox(height: 15,),
-                Column(
-                  children: _getDatesWidgets(widget.card.doseDates),
-                ),
-                if(widget.edit&&widget.card.doseDates.length<6)...[
-                  IconButton(
-                      padding: const EdgeInsets.all(0),
-                      onPressed: (){
-                        setState(() {
-                          _showDatePicker(context: context, controller: null);
-                        });
-                      },
-                      icon: const Icon(Icons.add_circle_outlined,size: 30,color: colorTextSecondary,)
-                  ),
+                style: TextStyles.inputStyle,
+              ),
+              const  SizedBox(height: 15,),
+              Column(
+                children: _getDatesWidgets(widget.card.doseDates),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if(widget.edit&&widget.card.doseDates.length<6)...[
+                    IconButton(
+                        padding: const EdgeInsets.all(0),
+                        onPressed: () async {
+                          await _showDatePicker(context: context, controller: null);
+
+                          SchedulerBinding.instance!.addPostFrameCallback((_) {
+                            _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          });
+                        },
+                        icon: const Icon(Icons.add_circle_outlined,size: 30,color: colorTextSecondary,)
+                    ),
+                  ],
+                  if(widget.edit&&widget.card.doseDates.isNotEmpty)...[
+                    IconButton(
+                        padding: const EdgeInsets.all(0),
+                        onPressed: (){
+                          setState(() {
+                            widget.card.doseDates.removeLast();
+                          });
+                        },
+                        icon: const Icon(Icons.remove_circle,size: 30,color: colorTextSecondary,)
+                    ),
+
+                  ],
                 ],
+              ),
 
-                const SizedBox(height: 35,),
-              ],
-            )
+
+              const SizedBox(height: 35,),
+            ],
           )
-        );
+      ),
+    );
       }
 
    List<Widget> _getDatesWidgets(List<String> dates){
@@ -233,7 +277,7 @@ class _FormCardState extends State<FormCard> {
       }
       listForm.add(
         Flexible(
-          child: TextFormField(
+          child: TextField(
             decoration: InputStyles.inputGeneral("","Date ${Strings.ordinalNumbers[i]} dose"),
             onTap: ()async{
               _showDatePicker(context: context,controller: _dateController[i]);
@@ -267,7 +311,8 @@ class _FormCardState extends State<FormCard> {
     return list;
    }
 
-  _showDatePicker({required BuildContext context,TextEditingController? controller})async{
+  Future<void> _showDatePicker({required BuildContext context,TextEditingController? controller})async{
+    FocusScope.of(context).unfocus();
     DateTime initialDate=DateTime.now();
     if(controller!=null){
       var splitDate=controller.text.split("/");
@@ -290,19 +335,15 @@ class _FormCardState extends State<FormCard> {
       else{
         controller.text=date;
       }
-      debugPrint(picked.toString());
     }
 
   }
   _loadData(){
-    debugPrint(widget.card.toString());
-    CardModel? card=widget.card;
-    if(card!=null){
-      _fullNameController.text=card.fullName;
-      _vaccineController.text=card.vaccine;
-      for(int i=0;i<card.doseDates.length;i++){
-        _dateController[i].text=card.doseDates[i];
-      }
+    CardModel card=widget.card;
+    _fullNameController.text=card.fullName;
+    _vaccineController.text=card.vaccine;
+    for(int i=0;i<card.doseDates.length;i++){
+      _dateController[i].text=card.doseDates[i];
     }
   }
 }
