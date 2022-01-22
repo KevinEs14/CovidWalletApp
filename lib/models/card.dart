@@ -28,8 +28,8 @@ class CardModel{
       fullName="",
       vaccine="",
       doseDates=[],
-      color=0,
-      barCode="";
+      color=0xffEB9522,
+      barCode="123";
 
   CardModel copyWith({String? fullName, String? vaccine, List<String>? doseDates,int? color,String? barCode}) =>
       CardModel(fullName: fullName??this.fullName, vaccine: vaccine??this.vaccine, doseDates: doseDates??this.doseDates, color: color??this.color, barCode: barCode??this.barCode);

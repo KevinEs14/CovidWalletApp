@@ -14,6 +14,7 @@ class CardBloc extends Bloc<CardEvent,CardState>{
     on<RemoveCardEvent>(_onRemoveCardEvent);
     on<UpdateCardEvent>(_onUpdateCardEvent);
     on<ChangeCurrentCardEvent>(_onChangeCurrentCardEvent);
+    on<NewCardEvent>(_onNewCardEvent);
   }
 
   void _onGetCardsEvent(GetCardsEvent event,Emitter<CardState> emit) async{
@@ -62,4 +63,9 @@ class CardBloc extends Bloc<CardEvent,CardState>{
     }
     catch(_){}
   }
+  void _onNewCardEvent(NewCardEvent event,Emitter<CardState> emit)async{
+    _cardRepository.currentCard=CardModel.init();
+    emit(CardStateNewCard(_cardRepository.cards,_cardRepository.currentCard));
+  }
+
 }

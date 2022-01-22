@@ -22,3 +22,9 @@ class CardStateFoundCards extends CardState{
 class CardStateWaiting extends CardState{
   const CardStateWaiting(cards,currentCard) : super(cards: cards,currentCard: currentCard);
 }
+class CardStateEditCard extends CardState{
+  const CardStateEditCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+}
+class CardStateNewCard extends CardState{
+  const CardStateNewCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+}

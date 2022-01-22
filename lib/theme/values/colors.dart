@@ -16,11 +16,7 @@ const Color colorOnError = Color(0xFFFFFFFF);
 const Color colorSurface = Color(0xFFFFFFFF);
 const Color colorOnSurface = Color(0xFF444444);
 
-const Color colorCard1=Color(0xffEB9522);
-const Color colorCard2=Color(0xffB14D4D);
-const Color colorCard3=Color(0xff5E447D);
-const Color colorCard4=Color(0xff39609B);
-const Color colorCard5=Color(0xff209FA8);
+const List<Color> colorCards=[Color(0xffEB9522),Color(0xffB14D4D),Color(0xff5E447D),Color(0xff39609B),Color(0xff209FA8)];
 
-const Color colorTextPrimary=Color(0xff707070);
+const Color colorTextPrimary=Color(0xff575757);
 const Color colorTextSecondary=Color(0xffFFFFFF);

@@ -41,3 +41,5 @@ class ChangeCurrentCardEvent extends CardEvent{
   @override
   List<Object?> get props => [fullName,vaccine,doseDates,color,barCode];
 }
+
+class NewCardEvent extends CardEvent{}
