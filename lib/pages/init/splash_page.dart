@@ -11,7 +11,8 @@ class SplashPage extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: Image.asset("assets/imagotype.png",fit: BoxFit.contain,),
+          child: Container(height: 10,width: 10,color: Colors.black,),
+          // child: Image.asset("assets/imagotype.png",fit: BoxFit.contain,),
         )
       ),
     );
