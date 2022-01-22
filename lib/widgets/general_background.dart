@@ -10,8 +10,10 @@ class GeneralBackground extends StatelessWidget {
   final double opacityLogo;
   final Widget? title;
   final Widget? actionButton;
+  final Widget? backgroundImage;
+  final Color? iconColor;
   final Future<bool> Function()? popFunction;
-  const GeneralBackground({Key? key,required this.child,this.height=3,this.opacityLogo=0,this.title,this.actionButton,this.popFunction}) : super(key: key);
+  const GeneralBackground({Key? key,required this.child,this.iconColor,this.height=3,this.backgroundImage,this.opacityLogo=0,this.title,this.actionButton,this.popFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,9 @@ class GeneralBackground extends StatelessWidget {
                   )
                 ],
               ),
+            if(backgroundImage!=null)...[
+                backgroundImage!,
+            ],
             SingleChildScrollView(
               child: SizedBox(
                 width: _size.width,
@@ -68,6 +73,7 @@ class GeneralBackground extends StatelessWidget {
                             AppBar(
                               backgroundColor: Colors.transparent,
                               elevation: 0,
+                              iconTheme: iconColor!=null?IconThemeData(color: iconColor):null,
                               centerTitle: true,
                               title: title,
                             ),

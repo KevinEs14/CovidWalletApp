@@ -8,6 +8,10 @@ class TextStyles {
       fontSize: 28,
       fontWeight: FontWeight.w500);
 
+  static const titleSecondStyle = TextStyle(
+      color: colorTextSecondary,
+      fontSize: 28,
+      fontWeight: FontWeight.w500);
   static const commentsStyle = TextStyle(
       color: colorTextPrimary,
       fontSize: 18,

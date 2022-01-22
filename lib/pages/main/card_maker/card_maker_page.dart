@@ -41,7 +41,9 @@ class _CardMakerPageState extends State<CardMakerPage> {
           builder: (context,state) {
           return GeneralBackground(
             opacityLogo: 0.3,
-            title: state.currentCard.key==null?const Text(Strings.newCard,style: TextStyles.titleStyle,):const Text(Strings.editCard,style: TextStyles.titleStyle,),
+            iconColor: _indexPage==0?colorTextSecondary:null,
+            backgroundImage:_indexPage==0?Image.asset("assets/scanBackground.png",fit: BoxFit.fill,width: _size.width,height: _size.height,):null,
+            title: Text(state.currentCard.key==null?Strings.newCard:Strings.editCard,style: _indexPage!=0?TextStyles.titleStyle:TextStyles.titleSecondStyle,),
             popFunction: ()async{
               Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               return false;
@@ -50,7 +52,7 @@ class _CardMakerPageState extends State<CardMakerPage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: DotsIndicator(height:10, index: _indexPage,color: colorTextPrimary,),
+                  child: DotsIndicator(height:10, index: _indexPage,color: _indexPage==0?colorTextSecondary:colorTextPrimary,),
                 ),
                 Expanded(
                   flex: 10,
@@ -86,7 +88,7 @@ class _CardMakerPageState extends State<CardMakerPage> {
                                   )
                                 )
                               )],
-                            _indexPage<_pages.length-1?MaterialButton(
+                            _indexPage<_pages.length-1&&state.currentCard.barCode.isNotEmpty?MaterialButton(
                                 onPressed: (){
                                   _pageController.animateToPage(_indexPage+1, duration: const Duration(milliseconds: 200), curve: Curves.ease);
                                   setState(() {

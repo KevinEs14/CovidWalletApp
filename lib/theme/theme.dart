@@ -10,23 +10,6 @@ const ButtonThemeData _buttonThemeData = ButtonThemeData(
   textTheme: ButtonTextTheme.primary,
 );
 
-const InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
-  alignLabelWithHint: false,
-  border: UnderlineInputBorder(),
-  enabledBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFbbbbbb)),
-    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-  ),
-  focusedBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: colorSecondary),
-    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-  ),
-  disabledBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFf6f6f6), width: 2),
-    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-  ),
-  contentPadding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-);
 
 ColorScheme _colorScheme = const ColorScheme(
     primary: colorPrimary,
@@ -72,7 +55,6 @@ ThemeData buildTheme() {
     toggleableActiveColor: colorSecondary,
     unselectedWidgetColor: colorSecondary,
     buttonTheme: _buttonThemeData,
-    inputDecorationTheme: _inputDecorationTheme,
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: <TargetPlatform, PageTransitionsBuilder>{
         TargetPlatform.android: ZoomPageTransitionsBuilder(),
