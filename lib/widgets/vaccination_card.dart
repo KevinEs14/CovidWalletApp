@@ -8,6 +8,7 @@ import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
 import 'package:covid_wallet_app/ui/icons/icon_edit.dart';
 import 'package:covid_wallet_app/ui/icons/icon_pharmacy.dart';
+import 'package:covid_wallet_app/widgets/alerts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
@@ -116,11 +117,20 @@ class ActionButtons extends StatelessWidget {
         ),
         IconButton(
             padding: const EdgeInsets.all(0),
-            onPressed: (){},
+            onPressed: (){
+              _deleteCard(context);
+            },
             icon: const Icon(Icons.delete,color: colorTextSecondary,size: 30,)
         )
       ],
     );
+  }
+
+  _deleteCard(BuildContext context)async{
+    var res=await showRegularAlert(context: context, title: "Delete", subtitle: Strings.alertDeleteCard);
+    if(res){
+      context.read<CardBloc>().add(RemoveCardEvent());
+    }
   }
 }
 
@@ -170,7 +180,6 @@ class _FormCardState extends State<FormCard> {
 
   final ScrollController _scrollController=ScrollController();
 
-  final GlobalKey<FormState> _formKey=GlobalKey();
   @override
   void initState() {
     _loadData();
@@ -206,7 +215,7 @@ class _FormCardState extends State<FormCard> {
                 controller: _fullNameController,
                 style: TextStyles.inputStyle,
                 onChanged: (value){
-                  context.read<CardBloc>().add(ChangeCurrentCardEvent(fullName: value));
+                  context.read<CardBloc>().add(ChangeValuesCurrentCardEvent(fullName: value));
                 },
 
               ),
@@ -215,7 +224,7 @@ class _FormCardState extends State<FormCard> {
                 decoration: InputStyles.inputGeneral("","Vaccine"),
                 controller: _vaccineController,
                 onChanged: (value){
-                  context.read<CardBloc>().add(ChangeCurrentCardEvent(vaccine: value));
+                  context.read<CardBloc>().add(ChangeValuesCurrentCardEvent(vaccine: value));
                 },
 
                 style: TextStyles.inputStyle,
@@ -232,7 +241,7 @@ class _FormCardState extends State<FormCard> {
                     IconButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () async {
-                          await _showDatePicker(context: context, controller: null);
+                          await _showDatePicker(context: context, controller: null,index:0);
 
                           SchedulerBinding.instance!.addPostFrameCallback((_) {
                             _scrollController.animateTo(
@@ -280,7 +289,7 @@ class _FormCardState extends State<FormCard> {
           child: TextField(
             decoration: InputStyles.inputGeneral("","Date ${Strings.ordinalNumbers[i]} dose"),
             onTap: ()async{
-              _showDatePicker(context: context,controller: _dateController[i]);
+              _showDatePicker(context: context,controller: _dateController[i],index:i);
             },
             controller: _dateController[i],
             keyboardType: TextInputType.datetime,
@@ -311,7 +320,7 @@ class _FormCardState extends State<FormCard> {
     return list;
    }
 
-  Future<void> _showDatePicker({required BuildContext context,TextEditingController? controller})async{
+  Future<void> _showDatePicker({required BuildContext context,TextEditingController? controller,required int index})async{
     FocusScope.of(context).unfocus();
     DateTime initialDate=DateTime.now();
     if(controller!=null){
@@ -334,6 +343,7 @@ class _FormCardState extends State<FormCard> {
       }
       else{
         controller.text=date;
+        widget.card.doseDates[index]=date;
       }
     }
 
@@ -346,6 +356,7 @@ class _FormCardState extends State<FormCard> {
       _dateController[i].text=card.doseDates[i];
     }
   }
+
 }
 
 class ShapePainter extends CustomPainter {

@@ -10,9 +10,7 @@ class CardRepository{
     try{
       cards=[];
       var boxCards = await Hive.openBox<CardModel>('cards');
-      /*await boxCards.clear();
-      await boxCards.add(CardModel(fullName: "Alvin Jamil Poma Tarqui", vaccine: "Moderna Covid-19 Vaccine", doseDates: ["3/4/22","5/4/22","3/4/22"], color: 0, barCode: "3asdf122"));
-*/
+      //await boxCards.add(CardModel(fullName: "Alvin Jamil Poma", vaccine: "Moderna Covid-19 Vaccine", doseDates: ["3/4/22","5/4/22","3/4/22"], color: 0, barCode: "3asdf122"));
       for(var key in boxCards.keys){
         CardModel? card=boxCards.get(key);
         if(card!=null){
@@ -51,7 +49,7 @@ class CardRepository{
   Future<void> removeCard()async{
     try{
       var boxCards = await Hive.openBox<CardModel>('cards');
-      await boxCards.delete(currentCard);
+      await boxCards.delete(currentCard.key);
       boxCards.close();
     }
     catch(_){

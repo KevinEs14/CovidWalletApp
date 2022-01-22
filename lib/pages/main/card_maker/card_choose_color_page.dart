@@ -80,7 +80,7 @@ class _ButtonColorsState extends State<ButtonColors> {
             setState(() {
               active=i;
             });
-            context.read<CardBloc>().add(ChangeCurrentCardEvent(color: i));
+            context.read<CardBloc>().add(ChangeValuesCurrentCardEvent(color: i));
           },
           child: Container(
             decoration: BoxDecoration(

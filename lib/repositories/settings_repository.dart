@@ -4,8 +4,6 @@ class SettingsRepository{
   bool firstTime=true;
 
   Future<void> verifyFirstTime()async{
-    //time for splash screen
-    await Future.delayed(const Duration(seconds: 2));
 
     var settings= await Hive.openBox<bool>('settings');
     bool? setting=settings.get("firstTime");

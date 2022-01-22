@@ -14,7 +14,7 @@ class TextStyles {
       fontWeight: FontWeight.w500);
   static const commentsStyle = TextStyle(
       color: colorTextPrimary,
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: FontWeight.w500);
 
 
@@ -42,4 +42,19 @@ class TextStyles {
       color: colorTextSecondary,
       fontSize: 18,
       fontWeight: FontWeight.w600);
+
+  static var indicatorStyle = TextStyle(
+      color: colorTextPrimary.withOpacity(0.7),
+      fontSize: 14,
+      fontWeight: FontWeight.w500);
+
+  static const  textErrorStyle =  TextStyle(
+      color: colorError,
+      fontSize: 16,
+      fontWeight: FontWeight.w500);
+
+  static const  textSuccessStyle =  TextStyle(
+      color: colorPrimary,
+      fontSize: 16,
+      fontWeight: FontWeight.w500);
 }

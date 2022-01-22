@@ -12,65 +12,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CardMakerPage extends StatefulWidget {
-  final CardBloc cardBloc;
-  const CardMakerPage({Key? key,required this.cardBloc}) : super(key: key);
+  final int initialPage;
+  const CardMakerPage({Key? key,required this.initialPage}) : super(key: key);
 
   @override
   State<CardMakerPage> createState() => _CardMakerPageState();
 }
 
 class _CardMakerPageState extends State<CardMakerPage> {
-  int _indexPage=0;
+  int _indexPage=1;
   final _pages=[CardScanPage(),CardChooseColorPage(),CardFormPage()];
-  final PageController _pageController=PageController();
+  PageController _pageController=PageController();
+  @override
+  void initState() {
+    _indexPage=widget.initialPage;
+    _pageController=PageController(initialPage: widget.initialPage);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final _size=MediaQuery.of(context).size;
-    return BlocProvider(
-      create: (context)=>widget.cardBloc,
-      child: BlocConsumer<CardBloc,CardState>(
-          listener: (context,state)async{
-            if(state is CardStateSaveOk){
-              showSuccessSnackBar(context: context, text: "Card saved successfully");
-              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-            }
-            if(state is CardStateSaveError){
-              showErrorSnackBar(context: context, text: state.error);
-            }
+    return BlocConsumer<CardBloc,CardState>(
+        listener: (context,state)async{
+
+          if(state is CardStateTransactionSuccess){
+            Navigator.pop(context);
+          }
+        },
+        builder: (context,state) {
+        return GeneralBackground(
+          opacityLogo: 0.3,
+          iconColor: _indexPage==0?colorTextSecondary:null,
+          backgroundImage:_indexPage==0?Image.asset("assets/scanBackground.png",fit: BoxFit.fill,width: _size.width,height: _size.height,):null,
+          title: Text(state.currentCard.key==null?Strings.newCard:Strings.editCard,style: _indexPage!=0?TextStyles.titleStyle:TextStyles.titleSecondStyle,),
+          popFunction: ()async{
+            context.read<CardBloc>().add(GetCardsEvent());
+            return true;
           },
-          builder: (context,state) {
-          return GeneralBackground(
-            opacityLogo: 0.3,
-            iconColor: _indexPage==0?colorTextSecondary:null,
-            backgroundImage:_indexPage==0?Image.asset("assets/scanBackground.png",fit: BoxFit.fill,width: _size.width,height: _size.height,):null,
-            title: Text(state.currentCard.key==null?Strings.newCard:Strings.editCard,style: _indexPage!=0?TextStyles.titleStyle:TextStyles.titleSecondStyle,),
-            popFunction: ()async{
-              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-              return false;
-            },
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: DotsIndicator(height:10, index: _indexPage,color: _indexPage==0?colorTextSecondary:colorTextPrimary,),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: PageView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: _pages,
-                    controller: _pageController,
-                  )
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            if(_indexPage>0)...[
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: DotsIndicator(height:10, index: _indexPage,color: _indexPage==0?colorTextSecondary:colorTextPrimary,),
+              ),
+              Expanded(
+                flex: 10,
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: _pages,
+                  controller: _pageController,
+                )
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          if(_indexPage==1)...[
+                          TextButton(
+                              onPressed: (){
+                                _pageController.animateToPage(_indexPage-1, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+                                setState(() {
+                                  _indexPage--;
+                                });
+                              },
+
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minWidth: _size.width*0.3,
+                                ),
+                                child: const Center(
+                                  child: Text("QR",style: TextStyles.textButtonStyle,),
+                                )
+                              )
+                            )],
+
+                          if(_indexPage>1)...[
                             TextButton(
                                 onPressed: (){
                                   _pageController.animateToPage(_indexPage-1, duration: const Duration(milliseconds: 200), curve: Curves.ease);
@@ -80,45 +100,44 @@ class _CardMakerPageState extends State<CardMakerPage> {
                                 },
 
                                 child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minWidth: _size.width*0.3,
-                                  ),
-                                  child: const Center(
-                                    child: Text("Back",style: TextStyles.textButtonStyle,),
-                                  )
+                                    constraints: BoxConstraints(
+                                      minWidth: _size.width*0.3,
+                                    ),
+                                    child: const Center(
+                                      child: Text("Back",style: TextStyles.textButtonStyle,),
+                                    )
                                 )
-                              )],
-                            _indexPage<_pages.length-1&&state.currentCard.barCode.isNotEmpty?MaterialButton(
-                                onPressed: (){
-                                  _pageController.animateToPage(_indexPage+1, duration: const Duration(milliseconds: 200), curve: Curves.ease);
-                                  setState(() {
-                                    _indexPage++;
-                                  });
-                                },
-                                color: colorPrimary,
-                                minWidth: _size.width*0.3,
-                                child: const Text("Next",style: TextStyles.textButtonFillStyle,),
-                              ):
-                            _indexPage==_pages.length-1?
-                              MaterialButton(
-                                onPressed: (){
-                                  context.read<CardBloc>().add(SaveCardEvent());
-                                  showLoadingSnackBar(context: context, text: "Saving vaccination card");
-                                },
-                                color: colorPrimary,
-                                minWidth: _size.width*0.3,
-                                child: const Text("Save",style: TextStyles.textButtonFillStyle,),
-                              ):const SizedBox.shrink(),
-                          ],
-                        )
-                      ],
-                    )
-                ),
-              ],
-            ),
-          );
-        }
-      ),
+                            )],
+                          _indexPage<_pages.length-1&&state.currentCard.barCode.isNotEmpty?MaterialButton(
+                              onPressed: (){
+                                _pageController.animateToPage(_indexPage+1, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+                                setState(() {
+                                  _indexPage++;
+                                });
+                              },
+                              color: colorPrimary,
+                              minWidth: _size.width*0.3,
+                              child: const Text("Next",style: TextStyles.textButtonFillStyle,),
+                            ):
+                          _indexPage==_pages.length-1?
+                            MaterialButton(
+                              onPressed: (){
+                                context.read<CardBloc>().add(SaveCardEvent());
+                                showLoadingSnackBar(context: context, text: "Saving vaccination card");
+                              },
+                              color: colorPrimary,
+                              minWidth: _size.width*0.3,
+                              child: const Text("Save",style: TextStyles.textButtonFillStyle,),
+                            ):const SizedBox.shrink(),
+                        ],
+                      )
+                    ],
+                  )
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 }

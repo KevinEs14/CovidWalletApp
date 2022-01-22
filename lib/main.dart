@@ -63,7 +63,10 @@ class _MainState extends State<Main> {
           Routes.splash:(context)=>const SplashPage(),
           Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: const HomePage(),),
           // Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: QrPage(),),
-          Routes.maker:(context)=>CardMakerPage(cardBloc: ModalRoute.of(context)!.settings.arguments as CardBloc),
+          Routes.maker:(context){
+            CardBloc bloc=ModalRoute.of(context)!.settings.arguments as CardBloc;
+            return BlocProvider.value(value: bloc,child: CardMakerPage(initialPage: bloc.state.currentCard.key!=null?1:0,));
+          },
           Routes.initPage:(context)=> InitPage(settingsCubit:BlocProvider.of<SettingsCubit>(context)),
         },
         builder: (context,child){

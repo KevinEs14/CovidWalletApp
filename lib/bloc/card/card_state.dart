@@ -25,11 +25,12 @@ class CardStateWaiting extends CardState{
 class CardStateEditingCard extends CardState{
   const CardStateEditingCard(cards,currentCard) : super(cards: cards,currentCard: currentCard);
 }
-class CardStateSaveOk extends CardState{
-  const CardStateSaveOk(cards,currentCard) : super(cards: cards,currentCard: currentCard);
+class CardStateTransactionSuccess extends CardState{
+  final String text;
+  const CardStateTransactionSuccess(cards,currentCard,this.text) : super(cards: cards,currentCard: currentCard);
 }
 
-class CardStateSaveError extends CardState{
+class CardStateTransactionError extends CardState{
   final String error;
-  const CardStateSaveError(cards,currentCard,this.error) : super(cards: cards,currentCard: currentCard);
+  const CardStateTransactionError(cards,currentCard,this.error) : super(cards: cards,currentCard: currentCard);
 }

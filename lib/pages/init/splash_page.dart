@@ -17,10 +17,6 @@ class SplashPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("assets/imagotype.png",fit: BoxFit.contain,),
-              const SizedBox(height: 20,),
-              const SpinKitFadingCircle(
-                color: colorSecondary,
-              ),
             ],
           )
         )

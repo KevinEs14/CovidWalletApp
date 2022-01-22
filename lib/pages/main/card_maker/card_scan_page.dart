@@ -42,7 +42,7 @@ class _CardScanPageState extends State<CardScanPage> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      context.read<CardBloc>().add(ChangeCurrentCardEvent(barCode: scanData.code));
+      context.read<CardBloc>().add(ChangeValuesCurrentCardEvent(barCode: scanData.code));
       // _qrController.getPayment(scanData.code??"");
     });
   }
