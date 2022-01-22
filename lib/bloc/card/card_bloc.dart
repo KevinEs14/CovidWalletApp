@@ -10,10 +10,10 @@ class CardBloc extends Bloc<CardEvent,CardState>{
   final CardRepository _cardRepository;
   CardBloc(this._cardRepository) : super(CardStateInit(_cardRepository.cards,_cardRepository.currentCard)){
     on<GetCardsEvent>(_onGetCardsEvent);
-    on<AddCardEvent>(_onAddCardEvent);
+    on<SaveCardEvent>(_onSaveCardEvent);
     on<RemoveCardEvent>(_onRemoveCardEvent);
-    on<UpdateCardEvent>(_onUpdateCardEvent);
     on<ChangeCurrentCardEvent>(_onChangeCurrentCardEvent);
+    on<EditCardEvent>(_onEditCardEvent);
     on<NewCardEvent>(_onNewCardEvent);
   }
 
@@ -21,35 +21,29 @@ class CardBloc extends Bloc<CardEvent,CardState>{
     await _cardRepository.getCards();
     emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
   }
-  void _onAddCardEvent(AddCardEvent event,Emitter<CardState> emit)async {
+  void _onSaveCardEvent(SaveCardEvent event,Emitter<CardState> emit)async {
     try{
       emit(CardStateWaiting(_cardRepository.cards,_cardRepository.currentCard));
-      await _cardRepository.addCard(event.card);
-      emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
+      await _cardRepository.saveCard();
+      emit(CardStateSaveOk(_cardRepository.cards,_cardRepository.currentCard));
     }
-    catch(_){}
+    catch(e){
+      emit(CardStateSaveError(_cardRepository.cards,_cardRepository.currentCard,e.toString()));
+    }
   }
   void _onRemoveCardEvent(RemoveCardEvent event,Emitter<CardState> emit)async{
     try{
       emit(CardStateWaiting(_cardRepository.cards,_cardRepository.currentCard));
-      await _cardRepository.removeCard(event.card);
+      await _cardRepository.removeCard();
       emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
     }
     catch(_){}
 
   }
 
-  void _onUpdateCardEvent(UpdateCardEvent event,Emitter<CardState> emit)async{
-    try{
-      emit(CardStateWaiting(_cardRepository.cards,_cardRepository.currentCard));
-      await _cardRepository.updateCard(event.card);
-      emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
-    }
-    catch(_){}
-
-  }
   void _onChangeCurrentCardEvent(ChangeCurrentCardEvent event,Emitter<CardState> emit)async{
     try{
+      var previousState=state;
       emit(CardStateWaiting(_cardRepository.cards,_cardRepository.currentCard));
       _cardRepository.currentCard=
           _cardRepository.currentCard.copyWith(
@@ -59,13 +53,21 @@ class CardBloc extends Bloc<CardEvent,CardState>{
               doseDates: event.doseDates,
               barCode: event.barCode
           );
-      emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
+      if(previousState is CardStateFoundCards){
+        emit(CardStateFoundCards(_cardRepository.cards,_cardRepository.currentCard));
+      }
+      else{
+        emit(CardStateEditingCard(_cardRepository.cards,_cardRepository.currentCard));
+      }
     }
     catch(_){}
   }
-  void _onNewCardEvent(NewCardEvent event,Emitter<CardState> emit)async{
+  void _onEditCardEvent(EditCardEvent event, Emitter<CardState> emit) async{
+    emit(CardStateEditingCard(_cardRepository.cards,_cardRepository.currentCard));
+  }
+  void _onNewCardEvent(NewCardEvent event, Emitter<CardState> emit) async{
     _cardRepository.currentCard=CardModel.init();
-    emit(CardStateNewCard(_cardRepository.cards,_cardRepository.currentCard));
+    emit(CardStateEditingCard(_cardRepository.cards,_cardRepository.currentCard));
   }
 
 }

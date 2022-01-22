@@ -18,5 +18,5 @@ const Color colorOnSurface = Color(0xFF444444);
 
 const List<Color> colorCards=[Color(0xffEB9522),Color(0xffB14D4D),Color(0xff5E447D),Color(0xff39609B),Color(0xff209FA8)];
 
-const Color colorTextPrimary=Color(0xff575757);
+const Color colorTextPrimary=Color(0xff707070);
 const Color colorTextSecondary=Color(0xffFFFFFF);

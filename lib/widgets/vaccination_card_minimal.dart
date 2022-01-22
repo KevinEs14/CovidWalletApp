@@ -40,39 +40,42 @@ class _VaccinationCardMinimalState extends State<VaccinationCardMinimal> {
       children: [
         Positioned.fill(
           bottom: 10,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            elevation: 5,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(widget.card.color),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Card(
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Stack(
-                  children: [
-                    CustomPaint(
-                      size: Size(_size.width, 210),
-                      painter: ShapePainter(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: const [
-                              SizedBox(height: 10,),
-                              IconPharmacy(),
-                              SizedBox(height: 10,),
-                              Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
-                              Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
-                            ],
+              elevation: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: colorCards[widget.card.color],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Stack(
+                    children: [
+                      CustomPaint(
+                        size: Size(_size.width, 210),
+                        painter: ShapePainter(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              children: const [
+                                SizedBox(height: 10,),
+                                IconPharmacy(),
+                                SizedBox(height: 10,),
+                                Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
+                                Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ]
+                        ],
+                      )
+                    ]
+                ),
               ),
             ),
           ),

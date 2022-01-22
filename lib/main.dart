@@ -55,9 +55,9 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: buildTheme(),
-        debugShowCheckedModeBanner: false,
         navigatorKey: _navigatorKey,
         initialRoute: Routes.splash,
+        debugShowCheckedModeBanner: false,
         routes: {
           Routes.splash:(context)=>const SplashPage(),
           Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: const HomePage(),),

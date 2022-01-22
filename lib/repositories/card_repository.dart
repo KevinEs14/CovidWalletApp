@@ -10,9 +10,9 @@ class CardRepository{
     try{
       cards=[];
       var boxCards = await Hive.openBox<CardModel>('cards');
-      await boxCards.clear();
-      await boxCards.add(CardModel(fullName: "Alvin Jamil Poma Tarqui", vaccine: "Moderna Covid-19 Vaccine", doseDates: ["3/4/22","5/4/22","3/4/22"], color: 0xffEB9522, barCode: "3asdf122"));
-
+      /*await boxCards.clear();
+      await boxCards.add(CardModel(fullName: "Alvin Jamil Poma Tarqui", vaccine: "Moderna Covid-19 Vaccine", doseDates: ["3/4/22","5/4/22","3/4/22"], color: 0, barCode: "3asdf122"));
+*/
       for(var key in boxCards.keys){
         CardModel? card=boxCards.get(key);
         if(card!=null){
@@ -30,34 +30,32 @@ class CardRepository{
     }
 
   }
-  Future<void> addCard(CardModel card)async{
+  Future<void> saveCard()async{
     try{
+      currentCard.verifyData();
+      await Future.delayed(const Duration(milliseconds: 1000));
       var boxCards = await Hive.openBox<CardModel>('cards');
-      await boxCards.add(card);
+      if(currentCard.key==null){
+
+        await boxCards.add(currentCard);
+      }
+      else{
+        await boxCards.put(currentCard.key,currentCard);
+      }
       boxCards.close();
     }
-    catch(_){
-      throw "Could not add card";
+    catch(e){
+      rethrow;
     }
   }
-  Future<void> removeCard(CardModel card)async{
+  Future<void> removeCard()async{
     try{
       var boxCards = await Hive.openBox<CardModel>('cards');
-      await boxCards.delete(card.key);
+      await boxCards.delete(currentCard);
       boxCards.close();
     }
     catch(_){
       throw "Could not remove card";
-    }
-  }
-  Future<void> updateCard(CardModel card)async{
-    try{
-      var boxCards = await Hive.openBox<CardModel>('cards');
-      await boxCards.put(card.key,card);
-      boxCards.close();
-    }
-    catch(_){
-      throw "Could not update card";
     }
   }
 }
