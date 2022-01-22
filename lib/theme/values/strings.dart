@@ -8,7 +8,14 @@ class Strings{
   static const newCard="New Card";
   static const home="My Information";
 
+  //INIT PAGE
+  static const initWelcome="Welcome to";
+  static const initButton="Let's Get Started";
+  static const initInstructions="Please give Access to your Camera so that \nwe can scan and provide you what is \nthe inside the code";
 
+  //SCAN PAGE TEXT
+  static const scanTitle="Scan Barcode";
+  static const scanCard="Wait until your camera detects the \n Barcode information";
 
   //ERRORS
   static const errorEmptyFullName="Full name cannot be empty";
