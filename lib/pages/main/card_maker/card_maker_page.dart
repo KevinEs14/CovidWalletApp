@@ -1,6 +1,7 @@
 import 'package:covid_wallet_app/bloc/card/card_bloc.dart';
 import 'package:covid_wallet_app/pages/main/card_maker/card_choose_color_page.dart';
 import 'package:covid_wallet_app/pages/main/card_maker/card_form_page.dart';
+import 'package:covid_wallet_app/pages/main/card_maker/card_scan_page.dart';
 import 'package:covid_wallet_app/theme/text_styles.dart';
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
@@ -20,7 +21,7 @@ class CardMakerPage extends StatefulWidget {
 
 class _CardMakerPageState extends State<CardMakerPage> {
   int _indexPage=0;
-  final _pages=[CardChooseColorPage(),CardChooseColorPage(),CardFormPage()];
+  final _pages=[CardScanPage(),CardChooseColorPage(),CardFormPage()];
   final PageController _pageController=PageController();
   @override
   Widget build(BuildContext context) {

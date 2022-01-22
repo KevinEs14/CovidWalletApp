@@ -41,6 +41,8 @@ class InitPage extends StatelessWidget {
               child: Text("the inside the code",style: TextStyle(fontSize: 15),),
             ),
             SizedBox(height: 20,),
+
+            SizedBox(height: 20,),
             RawMaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 fillColor: colorPrimary,
