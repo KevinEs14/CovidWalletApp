@@ -1,5 +1,4 @@
 import 'package:covid_wallet_app/models/card.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class CardRepository{
@@ -10,7 +9,6 @@ class CardRepository{
     try{
       cards=[];
       var boxCards = await Hive.openBox<CardModel>('cards');
-      //await boxCards.add(CardModel(fullName: "Alvin Jamil Poma", vaccine: "Moderna Covid-19 Vaccine", doseDates: ["3/4/22","5/4/22","3/4/22"], color: 0, barCode: "3asdf122"));
       for(var key in boxCards.keys){
         CardModel? card=boxCards.get(key);
         if(card!=null){

@@ -26,7 +26,7 @@ class CardChooseColorPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Choose the color",style: TextStyles.commentsStyle,),
+                    Text("Choose the color",style: TextStyles.commentsStyle,),
                     const SizedBox(height: 10,),
                     ButtonColors(color:state.currentCard.color)
                   ],

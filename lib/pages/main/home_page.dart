@@ -5,7 +5,6 @@ import 'package:covid_wallet_app/theme/my_behavior.dart';
 import 'package:covid_wallet_app/theme/text_styles.dart';
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
-import 'package:covid_wallet_app/widgets/alerts.dart';
 import 'package:covid_wallet_app/widgets/general_background.dart';
 import 'package:covid_wallet_app/widgets/snack_bars.dart';
 import 'package:covid_wallet_app/widgets/vaccination_card.dart';
@@ -15,7 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget{
-  const HomePage({Key? key}) : super(key: key);
+  final bool init;
+  const HomePage({Key? key,required this.init}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,6 +25,15 @@ class _HomePageState extends State<HomePage>{
   PageController _pageController=PageController();
   int _indexCard=0;
 
+  @override
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      if(widget.init){
+        Navigator.pushNamed(context, Routes.maker,arguments: BlocProvider.of<CardBloc>(context));
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CardBloc,CardState>(
@@ -44,7 +53,7 @@ class _HomePageState extends State<HomePage>{
         },
         builder: (context,state) {
           return GeneralBackground(
-            title: const Text(Strings.home,style: TextStyles.titleStyle,),
+            title: Text(Strings.home,style: TextStyles.titleStyle,),
             actionButton: state.cards.isEmpty?null:FloatingActionButton(
               backgroundColor: colorPrimary,
               elevation: 5,
@@ -105,7 +114,7 @@ class _HomePageState extends State<HomePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(Strings.noCardsFound,style: TextStyles.commentsStyle,textAlign: TextAlign.center,),
+                                    Text(Strings.noCardsFound,style: TextStyles.commentsStyle,textAlign: TextAlign.center,),
                                     const SizedBox(height: 20,),
                                     FloatingActionButton(
                                       backgroundColor: colorPrimary,

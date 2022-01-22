@@ -6,7 +6,6 @@ import 'package:covid_wallet_app/pages/init/init_page.dart';
 import 'package:covid_wallet_app/pages/init/splash_page.dart';
 import 'package:covid_wallet_app/pages/main/card_maker/card_maker_page.dart';
 import 'package:covid_wallet_app/pages/main/home_page.dart';
-import 'package:covid_wallet_app/pages/main/qr_page.dart';
 import 'package:covid_wallet_app/repositories/card_repository.dart';
 import 'package:covid_wallet_app/repositories/settings_repository.dart';
 import 'package:covid_wallet_app/routes.dart';
@@ -61,7 +60,7 @@ class _MainState extends State<Main> {
         debugShowCheckedModeBanner: false,
         routes: {
           Routes.splash:(context)=>const SplashPage(),
-          Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: const HomePage(),),
+          Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: HomePage(init: ModalRoute.of(context)!.settings.arguments as bool),),
           // Routes.home:(context)=>BlocProvider(create: (context)=>CardBloc(context.read<CardRepository>())..add(GetCardsEvent()),child: QrPage(),),
           Routes.maker:(context){
             CardBloc bloc=ModalRoute.of(context)!.settings.arguments as CardBloc;
@@ -76,7 +75,10 @@ class _MainState extends State<Main> {
                 _navigator!.pushNamedAndRemoveUntil(Routes.initPage, (route) => false);
               }
               else if(state is FoundSettings){
-                _navigator!.pushNamedAndRemoveUntil(Routes.home, (route) => false);
+                _navigator!.pushNamedAndRemoveUntil(Routes.home, (route) => false,arguments: false);
+              }
+              else if(state is FirstTimeAddCard){
+                _navigator!.pushNamedAndRemoveUntil(Routes.home, (route) => false,arguments: true);
               }
             },
             child: child,

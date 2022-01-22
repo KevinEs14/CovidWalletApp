@@ -21,7 +21,7 @@ class CardMakerPage extends StatefulWidget {
 
 class _CardMakerPageState extends State<CardMakerPage> {
   int _indexPage=1;
-  final _pages=[CardScanPage(),CardChooseColorPage(),CardFormPage()];
+  final _pages=const [ CardScanPage(),CardChooseColorPage(),CardFormPage()];
   PageController _pageController=PageController();
   @override
   void initState() {
@@ -84,8 +84,8 @@ class _CardMakerPageState extends State<CardMakerPage> {
                                 constraints: BoxConstraints(
                                   minWidth: _size.width*0.3,
                                 ),
-                                child: const Center(
-                                  child: Text("QR",style: TextStyles.textButtonStyle,),
+                                child: Center(
+                                  child: Text("Change Code",style: TextStyles.textButtonStyle,),
                                 )
                               )
                             )],
@@ -103,7 +103,7 @@ class _CardMakerPageState extends State<CardMakerPage> {
                                     constraints: BoxConstraints(
                                       minWidth: _size.width*0.3,
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text("Back",style: TextStyles.textButtonStyle,),
                                     )
                                 )
@@ -117,7 +117,7 @@ class _CardMakerPageState extends State<CardMakerPage> {
                               },
                               color: colorPrimary,
                               minWidth: _size.width*0.3,
-                              child: const Text("Next",style: TextStyles.textButtonFillStyle,),
+                              child: Text("Next",style: TextStyles.textButtonFillStyle,),
                             ):
                           _indexPage==_pages.length-1?
                             MaterialButton(
@@ -127,7 +127,7 @@ class _CardMakerPageState extends State<CardMakerPage> {
                               },
                               color: colorPrimary,
                               minWidth: _size.width*0.3,
-                              child: const Text("Save",style: TextStyles.textButtonFillStyle,),
+                              child: Text("Save",style: TextStyles.textButtonFillStyle,),
                             ):const SizedBox.shrink(),
                         ],
                       )

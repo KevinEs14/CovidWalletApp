@@ -18,7 +18,7 @@ class SettingsCubit extends Cubit<SettingsState>{
   }
   void initSettings()async {
     await _settingsRepository.initSettings();
-    emit(FoundSettings());
+    emit(FirstTimeAddCard());
   }
 
 

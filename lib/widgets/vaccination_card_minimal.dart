@@ -1,16 +1,11 @@
-import 'dart:async';
 import 'package:covid_wallet_app/models/card.dart';
-import 'package:covid_wallet_app/theme/input_styles.dart';
 import 'package:covid_wallet_app/theme/text_styles.dart';
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
-import 'package:covid_wallet_app/ui/icons/icon_bottle.dart';
-import 'package:covid_wallet_app/ui/icons/icon_edit.dart';
 import 'package:covid_wallet_app/ui/icons/icon_pharmacy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class VaccinationCardMinimal extends StatefulWidget {
 
@@ -63,10 +58,10 @@ class _VaccinationCardMinimalState extends State<VaccinationCardMinimal> {
                         children: [
                           SingleChildScrollView(
                             child: Column(
-                              children: const [
-                                SizedBox(height: 10,),
-                                IconPharmacy(),
-                                SizedBox(height: 10,),
+                              children: [
+                                const SizedBox(height: 10,),
+                                const IconPharmacy(),
+                                const SizedBox(height: 10,),
                                 Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
                                 Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
                               ],
@@ -114,7 +109,7 @@ class BarCode extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         width: _size.width*0.35,
         height: 70,
         child: barcode!=null&&barcode!.isNotEmpty?BarcodeWidget(

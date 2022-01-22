@@ -25,12 +25,12 @@ class InitPage extends StatelessWidget {
             Image.asset("assets/phoneScanner.png",),
 
             Text(Strings.initWelcome,style: TextStyles.titleStyle,),
-            Container(
+            SizedBox(
                 height: size.height*0.08,
                 width: size.width*0.35,
                 child: Image.asset("assets/permission.png",)
             ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               Center(
                   child: Text(
                     Strings.initInstructions,
@@ -43,14 +43,12 @@ class InitPage extends StatelessWidget {
             // Center(
             //   child: Text("the inside the code",style: TextStyle(fontSize: 15),),
             // ),
-            SizedBox(height: 20,),
-
-            SizedBox(height: 20,),
+            const SizedBox(height:40,),
             RawMaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 fillColor: colorPrimary,
                 onPressed: (){
-                  checkpermission_camera(context);
+                  checkPermissionCamera(context);
                   // print("init");
                 },
               child: Container(
@@ -72,11 +70,11 @@ class InitPage extends StatelessWidget {
   }
 }
 
- checkpermission_camera(BuildContext context)async{
+ checkPermissionCamera(BuildContext context)async{
   var cameraStatus= await Permission.camera.status;
 
   if(!cameraStatus.isGranted){
-    var permission=await Permission.camera.request();
+    await Permission.camera.request();
 
   }
   if(await Permission.camera.isGranted){

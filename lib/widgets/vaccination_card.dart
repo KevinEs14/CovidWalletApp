@@ -149,7 +149,7 @@ class BarCode extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         width: _size.width*0.5,
         height: 100,
         child: barcode!=null&&barcode!.isNotEmpty?BarcodeWidget(
@@ -206,8 +206,8 @@ class _FormCardState extends State<FormCard> {
             children: [
               const IconPharmacy(),
               const SizedBox(height: 10,),
-              const Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
-              const Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
+              Text(Strings.titleCard,style: TextStyles.titleCardStyle,),
+              Text(Strings.subtitleCard,style: TextStyles.subtitleCardStyle,),
               const SizedBox(height: 10,),
               const SizedBox(height: 10,),
               TextField(

@@ -1,20 +1,22 @@
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:flutter/material.dart';
 class QrPage extends StatelessWidget {
+  const QrPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
         ShaderMask(
-          shaderCallback: (rect) => LinearGradient(
+          shaderCallback: (rect) => const LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.center,
             colors: [Colors.transparent, Colors.transparent],
           ).createShader(rect),
           blendMode: BlendMode.darken,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/scanBackground.png"),
                 fit: BoxFit.cover,
@@ -28,26 +30,26 @@ class QrPage extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
+              const Center(
                   child: Text(
                     "Scan Barcode",
                     style: TextStyle(
                         color: colorOnPrimary, fontSize: 34, fontWeight: FontWeight.bold),
                   )),
-              SizedBox(height: 10,),
-              Center(
+              const SizedBox(height: 10,),
+              const Center(
                   child: Text(
                     "Wait until your camera detects the",
                     style: TextStyle(
                         color: colorOnPrimary, fontSize: 16, ),
                   )),
-              Center(
+              const Center(
                   child: Text(
                     "Barcode information",
                     style: TextStyle(
                         color: colorOnPrimary, fontSize: 16,),
                   )),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               RawMaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 fillColor: colorSecondary,
@@ -62,9 +64,9 @@ class QrPage extends StatelessWidget {
                   width: size.width*0.8,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(Icons.qr_code,color: Colors.white,),
-                      const Text(
+                      Text(
                         "Scan Barcode",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white),

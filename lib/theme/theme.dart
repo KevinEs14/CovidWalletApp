@@ -44,12 +44,12 @@ ThemeData buildTheme() {
     appBarTheme: _appBarTheme,
     errorColor: colorError,
     focusColor: colorPrimary,
+
     textSelectionTheme:TextSelectionThemeData(
       cursorColor: colorTextSecondary,
       selectionColor: colorPrimary.withOpacity(0.3),
       selectionHandleColor: colorPrimary
     ),
-    cardColor: colorSurface,
     scaffoldBackgroundColor: colorBackground,
     backgroundColor: colorBackground,
     toggleableActiveColor: colorSecondary,

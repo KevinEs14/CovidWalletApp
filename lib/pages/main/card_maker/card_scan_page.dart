@@ -3,7 +3,6 @@ import 'package:covid_wallet_app/bloc/card/card_bloc.dart';
 import 'package:covid_wallet_app/theme/text_styles.dart';
 import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/theme/values/strings.dart';
-import 'package:covid_wallet_app/widgets/vaccination_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -43,7 +42,6 @@ class _CardScanPageState extends State<CardScanPage> {
     });
     controller.scannedDataStream.listen((scanData) {
       context.read<CardBloc>().add(ChangeValuesCurrentCardEvent(barCode: scanData.code));
-      // _qrController.getPayment(scanData.code??"");
     });
   }
 
@@ -82,14 +80,14 @@ class _CardScanPageState extends State<CardScanPage> {
                   )
               ),
 
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               Center(
                   child: Text(
                     Strings.scanCard,
                     textAlign: TextAlign.center,
                     style: TextStyles.subtitleCardStyle,
                   )),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
             ],
           );
         }

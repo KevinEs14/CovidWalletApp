@@ -1,6 +1,4 @@
 import 'package:covid_wallet_app/theme/values/colors.dart';
-import 'package:covid_wallet_app/theme/text_styles.dart';
-import 'package:covid_wallet_app/ui/icons/icon_logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +38,7 @@ class GeneralBackground extends StatelessWidget {
                         )
                       )
                   ),
-                  height>=10?SizedBox.shrink():
+                  height>=10?const SizedBox.shrink():
                   Expanded(
                       flex: 10-height,
                     child: Stack(

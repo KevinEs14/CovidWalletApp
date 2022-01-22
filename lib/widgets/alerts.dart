@@ -16,10 +16,10 @@ class GeneralAlert extends StatelessWidget {
       actions: [
         TextButton(onPressed: (){
           Navigator.pop(context,true);
-          }, child: const Text("Accept",style: TextStyles.textSuccessStyle,)),
+          }, child: Text("Accept",style: TextStyles.textSuccessStyle,)),
         TextButton(onPressed: (){
           Navigator.pop(context,false);
-        }, child: const Text("Cancel",style: TextStyles.textErrorStyle,)),
+        }, child: Text("Cancel",style: TextStyles.textErrorStyle,)),
       ],
     );
   }

@@ -1,7 +1,5 @@
-import 'package:covid_wallet_app/theme/values/colors.dart';
 import 'package:covid_wallet_app/widgets/general_background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
